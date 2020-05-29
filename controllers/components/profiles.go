@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"COL-server/account"
+	"github.com/CurtisMIT/COL-server/account"
 
 	"github.com/lib/pq"
 )

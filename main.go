@@ -9,8 +9,9 @@ import (
 
 	// "log"
 
-	"COL-server/controllers/components"
 	"net/http"
+
+	"github.com/CurtisMIT/COL-server/controllers/components"
 )
 
 type Article struct {

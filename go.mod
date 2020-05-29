@@ -1,5 +1,4 @@
-// module github.com/CurtisMIT/COL-server
-module COL-server
+module github.com/CurtisMIT/COL-server
 
 go 1.14
 
