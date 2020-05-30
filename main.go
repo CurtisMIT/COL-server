@@ -1,14 +1,17 @@
 package main
 
 import (
-	//	"database/sql"
-	"encoding/json"
-	"fmt"
 	"log"
-	"net/http"
 	"os"
 
-	_ "github.com/lib/pq"
+	"encoding/json"
+	"fmt"
+
+	// "log"
+
+	"net/http"
+
+	"github.com/CurtisMIT/COL-server/controllers/components"
 )
 
 type Article struct {
@@ -21,17 +24,19 @@ var Articles []Article
 
 func returnAllArticles(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: returnAllArticles")
+	fmt.Println(Articles)
 	json.NewEncoder(w).Encode(Articles)
 }
 
 func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "welcome to the homepage")
+	fmt.Fprintf(w, "welcome to this fucking shitfuck")
 	fmt.Println("Endpoint Hit: HomePage")
 }
 
 func handleRequest(port string) {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/articles", returnAllArticles)
+	http.HandleFunc("/test", components.ProfileList)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
@@ -42,7 +47,7 @@ func main() {
 	}
 	port := os.Getenv("PORT")
 	fmt.Println(os.Getenv("PORT"))
-	fmt.Println(os.Getenv("DATABASE_URL"))
+	// fmt.Println(os.Getenv("DATABASE_URL"))
 	//	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	//	if err != nil {
 	//		fmt.Println("error in opening")
@@ -55,7 +60,8 @@ func main() {
 	//		panic(err)
 	//	}
 
-	fmt.Println("CONNECTED")
-
+	fmt.Printf("CONNECTED to %s", port)
+	// openDb()
 	handleRequest(port)
+
 }
