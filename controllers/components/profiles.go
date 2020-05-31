@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/CurtisMIT/COL-server/account"
+	"os"
+	//"github.com/CurtisMIT/COL-server/account"
 
 	"github.com/lib/pq"
 )
@@ -26,7 +26,7 @@ type profile struct {
 type Profiles []profile
 
 func OpenDb() *sql.DB {
-	url := account.Url
+	url := os.Getenv("DATABASE_URL")
 	connection, _ := pq.ParseURL(url)
 	connection += " sslmode=require"
 
