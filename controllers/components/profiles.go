@@ -9,7 +9,7 @@ import (
 	"os"
 	//"github.com/CurtisMIT/COL-server/account"
 
-	"github.com/lib/pq"
+	_ "github.com/lib/pq"
 )
 
 type profile struct {
