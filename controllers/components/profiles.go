@@ -28,7 +28,7 @@ type Profiles []profile
 func OpenDb() *sql.DB {
 	url := os.Getenv("DATABASE_URL")
 	connection, _ := pq.ParseURL(url)
-	connection += " sslmode=require"
+	//connection += " sslmode=require"
 
 	db, err := sql.Open("postgres", connection)
 	if err != nil {
