@@ -1,4 +1,4 @@
-package components
+package individual
 
 import (
 	"encoding/json"
@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/CurtisMIT/COL-server/controllers/get"
 	_ "github.com/lib/pq"
 )
 
@@ -22,20 +23,20 @@ type individual struct {
 
 type Individual []individual
 
-func ReturnIndividualReq(w http.ResponseWriter, r *http.Request) {
+func ReturnHeaderReq(w http.ResponseWriter, r *http.Request) {
 	// can remove in prod, depending on origin
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	// grabbing the parameter for id
-	id := strings.TrimPrefix(r.URL.Path, "/individual/")
-	individual := returnIndividualDB(id)
+	id := strings.TrimPrefix(r.URL.Path, "/individual/header/")
+	individual := returnHeaderDB(id)
 
 	json.NewEncoder(w).Encode(individual)
 	fmt.Println("#User tried to access db.individual. Roger.")
 }
 
-func returnIndividualDB(id string) Individual {
-	db := OpenDb()
+func returnHeaderDB(id string) Individual {
+	db := get.OpenDb()
 	rows, err := db.Query(`
 	SELECT 
 		profiles.title,
@@ -55,7 +56,7 @@ func returnIndividualDB(id string) Individual {
 	if err != nil {
 		panic(err)
 	}
-	var individualData Individual
+	var headerData Individual
 	var Created_at time.Time
 	var Tags string
 	for rows.Next() {
@@ -66,8 +67,8 @@ func returnIndividualDB(id string) Individual {
 		// conversion for FE
 		i.Tags = strings.Split(Tags, ", ")
 		i.Created_at = Created_at.Format("January 2, 2006")
-		individualData = append(individualData, i)
+		headerData = append(headerData, i)
 	}
 	db.Close()
-	return individualData
+	return headerData
 }

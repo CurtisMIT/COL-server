@@ -1,4 +1,4 @@
-package components
+package get
 
 import (
 	"database/sql"
@@ -63,8 +63,8 @@ func returnProfilesDB() Profiles {
 			DT.tags 
 		FROM profiles 
 		INNER JOIN 
-		(SELECT individual_id, string_agg(tag, ', ') AS tags 
-		FROM tags GROUP  BY 1) DT 
+			(SELECT individual_id, string_agg(tag, ', ') AS tags 
+			FROM tags GROUP  BY 1) DT 
 		ON (profiles.individual_id = DT.individual_id)`)
 
 	if err != nil {

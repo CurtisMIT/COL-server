@@ -11,7 +11,8 @@ import (
 
 	"net/http"
 
-	"github.com/CurtisMIT/COL-server/controllers/components"
+	"github.com/CurtisMIT/COL-server/controllers/get"
+	"github.com/CurtisMIT/COL-server/controllers/get/individual"
 )
 
 type Article struct {
@@ -36,8 +37,13 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 func handleRequest(port string) {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/articles", returnAllArticles)
-	http.HandleFunc("/profiles", components.ReturnProfilesReq)
-	http.HandleFunc("/individual/", components.ReturnIndividualReq)
+	http.HandleFunc("/profiles", get.ReturnProfilesReq)
+	http.HandleFunc("/individual/header/", individual.ReturnHeaderReq)
+	http.HandleFunc("/individual/earnings/", individual.ReturnEarningsReq)
+	http.HandleFunc("/individual/growth/", individual.ReturnGrowthReq)
+	http.HandleFunc("/individual/expenses/", individual.ReturnExpensesReq)
+	http.HandleFunc("/individual/market/", individual.ReturnMarketReq)
+	http.HandleFunc("/individual/others/", individual.ReturnOthersReq)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
