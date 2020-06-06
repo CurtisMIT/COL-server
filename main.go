@@ -29,14 +29,15 @@ func returnAllArticles(w http.ResponseWriter, r *http.Request) {
 }
 
 func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "welcome to this fucking shitfuck")
+	fmt.Fprintf(w, "welcome to the best go app ever.")
 	fmt.Println("Endpoint Hit: HomePage")
 }
 
 func handleRequest(port string) {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/articles", returnAllArticles)
-	http.HandleFunc("/test", components.ProfileList)
+	http.HandleFunc("/profiles", components.ReturnProfilesReq)
+	http.HandleFunc("/individual/", components.ReturnIndividualReq)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
