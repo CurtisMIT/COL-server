@@ -29,27 +29,29 @@ func ReturnOthersReq(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	// w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	// grabbing the parameter for id
-	location := strings.TrimPrefix(r.URL.Path, "/individual/others/")
-	profiles := returnOthersDB(location)
+	id := strings.TrimPrefix(r.URL.Path, "/individual/others/")
+	profiles := returnOthersDB(id)
 	// fmt.Println(profiles)
 	json.NewEncoder(w).Encode(profiles)
 	fmt.Println("#User tried to access db.others. Roger.")
 }
 
-func returnOthersDB(location string) Profiles {
+func returnOthersDB(id string) Profiles {
 	db := get.OpenDb()
 	rows, err := db.Query(`
 		SELECT
 			profiles.*,
 			DT.tags
-		FROM profiles
+		FROM profiles		
 		INNER JOIN 
 			(SELECT individual_id, string_agg(tag, ', ') AS tags 
 			FROM tags GROUP  BY 1) DT 
 		ON (profiles.individual_id = DT.individual_id)		
-		WHERE location = $1
+		INNER JOIN
+			(SELECT * from profiles where individual_id = $1) TT
+		on profiles.location = TT.location
 		limit 3
-	`, location)
+	`, id)
 	if err != nil {
 		panic(err)
 	}

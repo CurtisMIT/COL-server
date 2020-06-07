@@ -10,7 +10,7 @@ import (
 )
 
 type earnings struct {
-	Type        string `json:"type"`
+	Category    string `json:"category"`
 	Amount      int    `json:"amount"`
 	Description string `json:"description"`
 }
@@ -30,7 +30,7 @@ func returnEarningsDB(id string) Earnings {
 	db := get.OpenDb()
 	rows, err := db.Query(`
 		SELECT 			
-			type,
+			category,
 			amount, 
 			description
 		FROM earnings 
@@ -42,7 +42,7 @@ func returnEarningsDB(id string) Earnings {
 	var earningsData Earnings
 	for rows.Next() {
 		e := earnings{}
-		rows.Scan(&e.Type, &e.Amount, &e.Description)
+		rows.Scan(&e.Category, &e.Amount, &e.Description)
 		earningsData = append(earningsData, e)
 	}
 	db.Close()
