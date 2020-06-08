@@ -13,6 +13,7 @@ import (
 
 	"github.com/CurtisMIT/COL-server/controllers/get"
 	"github.com/CurtisMIT/COL-server/controllers/get/individual"
+	"github.com/CurtisMIT/COL-server/controllers/post/profile"
 )
 
 type Article struct {
@@ -44,6 +45,9 @@ func handleRequest(port string) {
 	http.HandleFunc("/individual/expenses/", individual.ReturnExpensesReq)
 	http.HandleFunc("/individual/market/", individual.ReturnMarketReq)
 	http.HandleFunc("/individual/others/", individual.ReturnOthersReq)
+	// post
+	http.HandleFunc("/post/profile", profile.CreateProfile)
+
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
