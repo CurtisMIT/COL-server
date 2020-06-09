@@ -39,6 +39,7 @@ func handleRequest(port string) {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/articles", returnAllArticles)
 	http.HandleFunc("/profiles", get.ReturnProfilesReq)
+	http.HandleFunc("/currency", get.ReturnCurrencyReq)
 	http.HandleFunc("/individual/header/", individual.ReturnHeaderReq)
 	http.HandleFunc("/individual/earnings/", individual.ReturnEarningsReq)
 	http.HandleFunc("/individual/growth/", individual.ReturnGrowthReq)
@@ -58,21 +59,6 @@ func main() {
 	}
 	port := os.Getenv("PORT")
 	fmt.Println(os.Getenv("PORT"))
-	// fmt.Println(os.Getenv("DATABASE_URL"))
-	//	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
-	//	if err != nil {
-	//		fmt.Println("error in opening")
-	//		panic(err)
-	//	}
-	//	defer db.Close()
-	//
-	//	err = db.Ping()
-	//	if err != nil {
-	//		panic(err)
-	//	}
-
-	fmt.Printf("CONNECTED to %s", port)
-	// openDb()
 	handleRequest(port)
 
 }

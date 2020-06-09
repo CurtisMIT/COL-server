@@ -22,6 +22,7 @@ type Profile struct {
 	Breakdown     []Extra        `json:"breakdownList"`
 	ExpenseList   []Extra        `json:"expenseList"`
 	PastList      []Past         `json:"pastList"`
+	Currency      string         `json:"currency"`
 }
 type Extra struct {
 	Category    string `json:"category"`
@@ -56,8 +57,8 @@ func insertProfile(p Profile) {
 	db := get.OpenDb()
 	_, err := db.Query(`
 		INSERT INTO profiles(
-		individual_id, title, location, industry, experience, earnings, expenses, quote)
-		VALUES($1, $2, $3, $4, $5, $6, $7, $8 )`,
+		individual_id, title, location, industry, experience, earnings, expenses, quote, currency)
+		VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9 )`,
 		p.Individual_id,
 		p.Title,
 		p.Location,
@@ -65,7 +66,8 @@ func insertProfile(p Profile) {
 		p.Experience,
 		p.Earnings,
 		p.Expenses,
-		p.Quote)
+		p.Quote,
+		p.Currency)
 	if err != nil {
 		panic(err)
 	}

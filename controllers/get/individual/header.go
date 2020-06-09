@@ -18,6 +18,7 @@ type individual struct {
 	Experience int      `json:"experience"`
 	Quote      string   `json:"quote"`
 	Created_at string   `json:"created_at"`
+	Currency   string   `json:"currency"`
 	Tags       []string `json:"tags"`
 }
 
@@ -43,6 +44,7 @@ func returnHeaderDB(id string) Individual {
 		profiles.experience,
 		profiles.quote,
 		profiles.created_at,
+		profiles.currency,
 		DT.tags 
 	FROM profiles 
 	INNER JOIN 
@@ -61,7 +63,7 @@ func returnHeaderDB(id string) Individual {
 		i := individual{}
 		rows.Scan(
 			&i.Title, &i.Location, &i.Industry,
-			&i.Experience, &i.Quote, &Created_at, &Tags)
+			&i.Experience, &i.Quote, &Created_at, &i.Currency, &Tags)
 		// conversion for FE
 		i.Tags = strings.Split(Tags, ", ")
 		i.Created_at = Created_at.Format("January 2, 2006")

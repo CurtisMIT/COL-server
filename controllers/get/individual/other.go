@@ -20,6 +20,7 @@ type profiles struct {
 	Expenses      int      `json:"expenses"`
 	Quote         string   `json:"quote"`
 	Created_at    string   `json:"created_at"`
+	Currency      string   `json:"currency"`
 	Tags          []string `json:"tags"`
 }
 type Profiles []profiles
@@ -61,7 +62,7 @@ func returnOthersDB(id string) Profiles {
 		rows.Scan(
 			&p.Individual_ID, &p.Title,
 			&p.Location, &p.Industry, &p.Experience, &p.Earnings,
-			&p.Expenses, &p.Quote, &Created_at, &Tags)
+			&p.Expenses, &p.Quote, &Created_at, &p.Currency, &Tags)
 		// convert string to array for FE
 		p.Tags = strings.Split(Tags, ", ")
 		p.Created_at = Created_at.Format("January 2, 2006")
