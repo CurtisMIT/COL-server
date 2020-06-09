@@ -20,7 +20,6 @@ type Market []market
 func ReturnMarketReq(w http.ResponseWriter, r *http.Request) {
 	// can remove in prod, depending on origin
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	// grabbing the parameter for id
 	id := strings.TrimPrefix(r.URL.Path, "/individual/market/")
 	individual := returnMarketDB(id)
 	json.NewEncoder(w).Encode(individual)
@@ -49,6 +48,5 @@ func returnMarketDB(id string) Market {
 		rows.Scan(&m.Title, &m.Earnings, &m.Expenses, &m.Experience)
 		marketData = append(marketData, m)
 	}
-	db.Close()
 	return marketData
 }

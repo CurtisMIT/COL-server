@@ -28,10 +28,8 @@ func ReturnOthersReq(w http.ResponseWriter, r *http.Request) {
 	// can remove in prod, depending on origin
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	// w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-	// grabbing the parameter for id
 	id := strings.TrimPrefix(r.URL.Path, "/individual/others/")
 	profiles := returnOthersDB(id)
-	// fmt.Println(profiles)
 	json.NewEncoder(w).Encode(profiles)
 	fmt.Println("#User tried to access db.others. Roger.")
 }
@@ -69,6 +67,5 @@ func returnOthersDB(id string) Profiles {
 		p.Created_at = Created_at.Format("January 2, 2006")
 		othersData = append(othersData, p)
 	}
-	db.Close()
 	return othersData
 }

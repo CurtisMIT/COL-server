@@ -26,11 +26,9 @@ type Individual []individual
 func ReturnHeaderReq(w http.ResponseWriter, r *http.Request) {
 	// can remove in prod, depending on origin
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-
 	// grabbing the parameter for id
 	id := strings.TrimPrefix(r.URL.Path, "/individual/header/")
 	individual := returnHeaderDB(id)
-
 	json.NewEncoder(w).Encode(individual)
 	fmt.Println("#User tried to access db.individual. Roger.")
 }
@@ -69,6 +67,5 @@ func returnHeaderDB(id string) Individual {
 		i.Created_at = Created_at.Format("January 2, 2006")
 		headerData = append(headerData, i)
 	}
-	db.Close()
 	return headerData
 }

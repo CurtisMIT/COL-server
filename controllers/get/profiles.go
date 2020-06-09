@@ -32,7 +32,6 @@ func OpenDb() *sql.DB {
 	url := os.Getenv("DATABASE_URL")
 	//	connection, _ := pq.ParseURL(url)
 	//connection += " sslmode=require"
-
 	db, err := sql.Open("postgres", url)
 	if err != nil {
 		fmt.Println("err")
@@ -47,16 +46,13 @@ func ReturnProfilesReq(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	// w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	profiles := returnProfilesDB()
-	// fmt.Println(profiles)
 	json.NewEncoder(w).Encode(profiles)
 	fmt.Println("#User tried to access db.profiles. Roger.")
-
 }
 
 func returnProfilesDB() Profiles {
 	db := OpenDb()
 
-	// DT for derived table
 	rows, err := db.Query(`
 		SELECT 
 			profiles.*, 
@@ -87,6 +83,6 @@ func returnProfilesDB() Profiles {
 		p.Created_at = Created_at.Format("January 2, 2006")
 		profilesData = append(profilesData, p)
 	}
-	db.Close()
+
 	return profilesData
 }

@@ -19,7 +19,6 @@ type Earnings []earnings
 func ReturnEarningsReq(w http.ResponseWriter, r *http.Request) {
 	// can remove in prod, depending on origin
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	// grabbing the parameter for id
 	id := strings.TrimPrefix(r.URL.Path, "/individual/earnings/")
 	individual := returnEarningsDB(id)
 	json.NewEncoder(w).Encode(individual)
@@ -45,7 +44,6 @@ func returnEarningsDB(id string) Earnings {
 		rows.Scan(&e.Category, &e.Amount, &e.Description)
 		earningsData = append(earningsData, e)
 	}
-	db.Close()
 	return earningsData
 }
 
@@ -84,6 +82,5 @@ func returnGrowthDB(id string) Growth {
 		rows.Scan(&g.Title, &g.Year, &g.Amount)
 		growthData = append(growthData, g)
 	}
-	db.Close()
 	return growthData
 }
