@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"os"
 
@@ -14,6 +15,7 @@ import (
 	"github.com/CurtisMIT/COL-server/controllers/get"
 	"github.com/CurtisMIT/COL-server/controllers/get/individual"
 	"github.com/CurtisMIT/COL-server/controllers/post/profile"
+	"github.com/CurtisMIT/COL-server/database"
 )
 
 type Article struct {
@@ -58,6 +60,15 @@ func main() {
 		Article{Title: "Hello2", Desc: "Desc 2", Content: "Content 2"},
 	}
 	port := os.Getenv("PORT")
+	url := os.Getenv("DATABASE_URL")
+	//connection += " sslmode=require"
+	var err error
+	database.DBCON, err = sql.Open("postgres", url)
+	if err != nil {
+		fmt.Println("err")
+		log.Println(err)
+	}
+
 	fmt.Println(os.Getenv("PORT"))
 	handleRequest(port)
 

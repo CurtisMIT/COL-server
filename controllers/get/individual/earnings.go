@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/CurtisMIT/COL-server/controllers/get"
+	"github.com/CurtisMIT/COL-server/database"
 )
 
 type earnings struct {
@@ -26,7 +26,7 @@ func ReturnEarningsReq(w http.ResponseWriter, r *http.Request) {
 }
 
 func returnEarningsDB(id string) Earnings {
-	db := get.OpenDb()
+	db := database.DBCON
 	rows, err := db.Query(`
 		SELECT 			
 			category,
@@ -64,7 +64,7 @@ func ReturnGrowthReq(w http.ResponseWriter, r *http.Request) {
 }
 
 func returnGrowthDB(id string) Growth {
-	db := get.OpenDb()
+	db := database.DBCON
 	rows, err := db.Query(`
 		SELECT 
 			title, 

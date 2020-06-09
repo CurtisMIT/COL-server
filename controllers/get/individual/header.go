@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/CurtisMIT/COL-server/controllers/get"
+	"github.com/CurtisMIT/COL-server/database"
 	_ "github.com/lib/pq"
 )
 
@@ -35,7 +35,7 @@ func ReturnHeaderReq(w http.ResponseWriter, r *http.Request) {
 }
 
 func returnHeaderDB(id string) Individual {
-	db := get.OpenDb()
+	db := database.DBCON
 	rows, err := db.Query(`
 	SELECT 
 		profiles.title,

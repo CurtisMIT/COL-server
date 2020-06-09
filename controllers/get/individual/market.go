@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/CurtisMIT/COL-server/controllers/get"
+	"github.com/CurtisMIT/COL-server/database"
 )
 
 type market struct {
@@ -27,7 +27,7 @@ func ReturnMarketReq(w http.ResponseWriter, r *http.Request) {
 }
 
 func returnMarketDB(id string) Market {
-	db := get.OpenDb()
+	db := database.DBCON
 	rows, err := db.Query(`
 		SELECT 
 			profiles.title, 

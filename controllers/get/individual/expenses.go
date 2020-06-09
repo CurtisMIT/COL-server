@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/CurtisMIT/COL-server/controllers/get"
+	"github.com/CurtisMIT/COL-server/database"
 )
 
 type expenses struct {
@@ -25,7 +25,7 @@ func ReturnExpensesReq(w http.ResponseWriter, r *http.Request) {
 }
 
 func returnExpensesDB(id string) Expenses {
-	db := get.OpenDb()
+	db := database.DBCON
 	rows, err := db.Query(`
 		SELECT
 			category,

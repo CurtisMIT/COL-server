@@ -3,6 +3,8 @@ package get
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/CurtisMIT/COL-server/database"
 )
 
 type currency struct {
@@ -20,7 +22,7 @@ func ReturnCurrencyReq(w http.ResponseWriter, r *http.Request) {
 }
 
 func returnCurrencyDB() Currency {
-	db := OpenDb()
+	db := database.DBCON
 	rows, err := db.Query(`
 		SELECT
 			name,

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/CurtisMIT/COL-server/controllers/get"
+	"github.com/CurtisMIT/COL-server/database"
 )
 
 type profiles struct {
@@ -36,7 +36,7 @@ func ReturnOthersReq(w http.ResponseWriter, r *http.Request) {
 }
 
 func returnOthersDB(id string) Profiles {
-	db := get.OpenDb()
+	db := database.DBCON
 	rows, err := db.Query(`
 		SELECT
 			profiles.*,

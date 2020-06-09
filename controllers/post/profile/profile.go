@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/CurtisMIT/COL-server/controllers/get"
+	"github.com/CurtisMIT/COL-server/database"
 	"github.com/lib/pq"
 )
 
@@ -54,7 +54,7 @@ func CreateProfile(w http.ResponseWriter, r *http.Request) {
 }
 
 func insertProfile(p Profile) {
-	db := get.OpenDb()
+	db := database.DBCON
 	_, err := db.Query(`
 		INSERT INTO profiles(
 		individual_id, title, location, industry, experience, earnings, expenses, quote, currency)
@@ -74,7 +74,7 @@ func insertProfile(p Profile) {
 }
 
 func insertTags(p Profile) {
-	db := get.OpenDb()
+	db := database.DBCON
 	_, err := db.Query(`
 		INSERT INTO tags(individual_id, tag)
 		SELECT $1 id, x
@@ -85,7 +85,7 @@ func insertTags(p Profile) {
 }
 
 func insertEarnings(p Profile) {
-	db := get.OpenDb()
+	db := database.DBCON
 	samples := p.Breakdown
 	query := `insert into earnings(individual_id, category, amount, description) values `
 	values := []interface{}{}
@@ -107,7 +107,7 @@ func insertEarnings(p Profile) {
 }
 
 func insertExpenses(p Profile) {
-	db := get.OpenDb()
+	db := database.DBCON
 	samples := p.ExpenseList
 	query := `insert into expenses(individual_id, category, amount, description) values `
 	values := []interface{}{}
@@ -129,7 +129,7 @@ func insertExpenses(p Profile) {
 }
 
 func insertPast(p Profile) {
-	db := get.OpenDb()
+	db := database.DBCON
 	samples := p.PastList
 	query := `insert into past(individual_id, title, year, amount) values `
 	values := []interface{}{}

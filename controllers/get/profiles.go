@@ -1,16 +1,14 @@
 package get
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 
 	//"github.com/CurtisMIT/COL-server/account"
+	"github.com/CurtisMIT/COL-server/database"
 	_ "github.com/lib/pq"
 )
 
@@ -29,18 +27,18 @@ type profile struct {
 }
 type Profiles []profile
 
-func OpenDb() *sql.DB {
-	url := os.Getenv("DATABASE_URL")
-	//	connection, _ := pq.ParseURL(url)
-	//connection += " sslmode=require"
-	db, err := sql.Open("postgres", url)
-	if err != nil {
-		fmt.Println("err")
-		log.Println(err)
-	}
-	fmt.Println("#Successfully connected to db. Roger.")
-	return db
-}
+// func OpenDb() *sql.DB {
+// 	url := os.Getenv("DATABASE_URL")
+// 	//	connection, _ := pq.ParseURL(url)
+// 	//connection += " sslmode=require"
+// 	db, err := sql.Open("postgres", url)
+// 	if err != nil {
+// 		fmt.Println("err")
+// 		log.Println(err)
+// 	}
+// 	fmt.Println("#Successfully connected to db. Roger.")
+// 	return db
+// }
 
 func ReturnProfilesReq(w http.ResponseWriter, r *http.Request) {
 	// can remove in prod, depending on origin
@@ -52,7 +50,7 @@ func ReturnProfilesReq(w http.ResponseWriter, r *http.Request) {
 }
 
 func returnProfilesDB() Profiles {
-	db := OpenDb()
+	db := database.DBCON
 
 	rows, err := db.Query(`
 		SELECT 
