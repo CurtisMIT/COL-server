@@ -16,6 +16,8 @@ type individual struct {
 	Location   string   `json:"location"`
 	Industry   string   `json:"industry"`
 	Experience int      `json:"experience"`
+	Earnings   int      `json:"earnings"`
+	Expenses   int      `json:"expenses"`
 	Quote      string   `json:"quote"`
 	Created_at string   `json:"created_at"`
 	Currency   string   `json:"currency"`
@@ -42,6 +44,8 @@ func returnHeaderDB(id string) Individual {
 		profiles.location,
 		profiles.industry,
 		profiles.experience,
+		profiles.earnings,
+		profiles.expenses,
 		profiles.quote,
 		profiles.created_at,
 		profiles.currency,
@@ -62,8 +66,8 @@ func returnHeaderDB(id string) Individual {
 	for rows.Next() {
 		i := individual{}
 		rows.Scan(
-			&i.Title, &i.Location, &i.Industry,
-			&i.Experience, &i.Quote, &Created_at, &i.Currency, &Tags)
+			&i.Title, &i.Location, &i.Industry, &i.Experience,
+			&i.Earnings, &i.Expenses, &i.Quote, &Created_at, &i.Currency, &Tags)
 		// conversion for FE
 		i.Tags = strings.Split(Tags, ", ")
 		i.Created_at = Created_at.Format("January 2, 2006")
