@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/CurtisMIT/COL-server/controllers/get"
+	"github.com/CurtisMIT/COL-server/database"
 )
 
 type profiles struct {
@@ -20,6 +20,7 @@ type profiles struct {
 	Expenses      int      `json:"expenses"`
 	Quote         string   `json:"quote"`
 	Created_at    string   `json:"created_at"`
+	Currency      string   `json:"currency"`
 	Tags          []string `json:"tags"`
 }
 type Profiles []profiles
@@ -28,16 +29,14 @@ func ReturnOthersReq(w http.ResponseWriter, r *http.Request) {
 	// can remove in prod, depending on origin
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	// w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-	// grabbing the parameter for id
 	id := strings.TrimPrefix(r.URL.Path, "/individual/others/")
 	profiles := returnOthersDB(id)
-	// fmt.Println(profiles)
 	json.NewEncoder(w).Encode(profiles)
 	fmt.Println("#User tried to access db.others. Roger.")
 }
 
 func returnOthersDB(id string) Profiles {
-	db := get.OpenDb()
+	db := database.DBCON
 	rows, err := db.Query(`
 		SELECT
 			profiles.*,
@@ -63,12 +62,11 @@ func returnOthersDB(id string) Profiles {
 		rows.Scan(
 			&p.Individual_ID, &p.Title,
 			&p.Location, &p.Industry, &p.Experience, &p.Earnings,
-			&p.Expenses, &p.Quote, &Created_at, &Tags)
+			&p.Expenses, &p.Quote, &Created_at, &p.Currency, &Tags)
 		// convert string to array for FE
 		p.Tags = strings.Split(Tags, ", ")
 		p.Created_at = Created_at.Format("January 2, 2006")
 		othersData = append(othersData, p)
 	}
-	db.Close()
 	return othersData
 }

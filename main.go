@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"os"
 
@@ -13,6 +14,8 @@ import (
 
 	"github.com/CurtisMIT/COL-server/controllers/get"
 	"github.com/CurtisMIT/COL-server/controllers/get/individual"
+	"github.com/CurtisMIT/COL-server/controllers/post/profile"
+	"github.com/CurtisMIT/COL-server/database"
 )
 
 type Article struct {
@@ -38,12 +41,16 @@ func handleRequest(port string) {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/articles", returnAllArticles)
 	http.HandleFunc("/profiles", get.ReturnProfilesReq)
+	http.HandleFunc("/currency", get.ReturnCurrencyReq)
 	http.HandleFunc("/individual/header/", individual.ReturnHeaderReq)
 	http.HandleFunc("/individual/earnings/", individual.ReturnEarningsReq)
 	http.HandleFunc("/individual/growth/", individual.ReturnGrowthReq)
 	http.HandleFunc("/individual/expenses/", individual.ReturnExpensesReq)
 	http.HandleFunc("/individual/market/", individual.ReturnMarketReq)
 	http.HandleFunc("/individual/others/", individual.ReturnOthersReq)
+	// post
+	http.HandleFunc("/post/profile", profile.CreateProfile)
+
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
@@ -53,22 +60,16 @@ func main() {
 		Article{Title: "Hello2", Desc: "Desc 2", Content: "Content 2"},
 	}
 	port := os.Getenv("PORT")
-	fmt.Println(os.Getenv("PORT"))
-	// fmt.Println(os.Getenv("DATABASE_URL"))
-	//	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
-	//	if err != nil {
-	//		fmt.Println("error in opening")
-	//		panic(err)
-	//	}
-	//	defer db.Close()
-	//
-	//	err = db.Ping()
-	//	if err != nil {
-	//		panic(err)
-	//	}
+	url := os.Getenv("DATABASE_URL")
+	//connection += " sslmode=require"
+	var err error
+	database.DBCON, err = sql.Open("postgres", url)
+	if err != nil {
+		fmt.Println("err")
+		log.Println(err)
+	}
 
-	fmt.Printf("CONNECTED to %s", port)
-	// openDb()
+	fmt.Println(os.Getenv("PORT"))
 	handleRequest(port)
 
 }

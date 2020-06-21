@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/CurtisMIT/COL-server/controllers/get"
+	"github.com/CurtisMIT/COL-server/database"
 )
 
 type earnings struct {
@@ -19,7 +19,6 @@ type Earnings []earnings
 func ReturnEarningsReq(w http.ResponseWriter, r *http.Request) {
 	// can remove in prod, depending on origin
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	// grabbing the parameter for id
 	id := strings.TrimPrefix(r.URL.Path, "/individual/earnings/")
 	individual := returnEarningsDB(id)
 	json.NewEncoder(w).Encode(individual)
@@ -27,7 +26,7 @@ func ReturnEarningsReq(w http.ResponseWriter, r *http.Request) {
 }
 
 func returnEarningsDB(id string) Earnings {
-	db := get.OpenDb()
+	db := database.DBCON
 	rows, err := db.Query(`
 		SELECT 			
 			category,
@@ -45,7 +44,6 @@ func returnEarningsDB(id string) Earnings {
 		rows.Scan(&e.Category, &e.Amount, &e.Description)
 		earningsData = append(earningsData, e)
 	}
-	db.Close()
 	return earningsData
 }
 
@@ -66,7 +64,7 @@ func ReturnGrowthReq(w http.ResponseWriter, r *http.Request) {
 }
 
 func returnGrowthDB(id string) Growth {
-	db := get.OpenDb()
+	db := database.DBCON
 	rows, err := db.Query(`
 		SELECT 
 			title, 
@@ -84,6 +82,5 @@ func returnGrowthDB(id string) Growth {
 		rows.Scan(&g.Title, &g.Year, &g.Amount)
 		growthData = append(growthData, g)
 	}
-	db.Close()
 	return growthData
 }
